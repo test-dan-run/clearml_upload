@@ -3,7 +3,7 @@ from clearml import Task
 #### PARAMS ####
 
 PROJECT_NAME = 'pretrained_models/nemo'
-MODEL_NAME = 'stt_en_conformer_ctc_large_v1.10.0'
+MODEL_NAME = 'stt_en_es_conformer_ctc_large_v1.10.0'
 
 # s3://<server url>:<port>/<bucket>/...
 OUTPUT_URI = 's3://experiment-logging/storage'

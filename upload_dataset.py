@@ -4,13 +4,13 @@ from typing import List
 
 #### PARAMS ####
 
-DATASET_PROJECT = 'example_projects/sample_datasets'
-DATASET_NAME = 'train_split'
-LOCAL_DATASET_DIR = '/mnt/d/sample_datasets/dataset1/train_split'
-ARTIFACT_PATHS = ['/mnt/d/sample_datasets/dataset1/train_split/train.json',]
+DATASET_PROJECT = 'datasets/tunisian_msa/ar/wav_16k'
+DATASET_NAME = 'train'
+LOCAL_DATASET_DIR = '/mnt/d/datasets/Tunisian_MSA/processed/wav_16k/train'
+ARTIFACT_PATHS = ['/mnt/d/datasets/Tunisian_MSA/processed/wav_16k/train/train_manifest.json',]
 
 # s3://<server url>:<port>/<bucket>/...
-OUTPUT_URI = 's3://min.io:80/clearml-data/default'
+OUTPUT_URI = 's3://experiment-logging/storage'
 
 ################
 

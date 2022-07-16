@@ -5,11 +5,11 @@ import json
 
 #### PARAMS ####
 
-PARENT_DATASET_IDS = ['709a1943cd0c4db18ec32cb17d978541', '01288ee80cf642d685496b89b07f819a','2d31814fec934b379d15d014d7d22717']
+PARENT_DATASET_IDS = ['127f476b17d24dfb99b3cb2f9797a2bf', '7835dfc23df9490d805ba5d069750c38','02e69bcacd984eaa8459938a9e1fb309']
 ARTIFACT_NAME = 'train_manifest.json'
 
 DATASET_PROJECT = 'datasets/combined_asr/ar/wav_16k'
-DATASET_NAME = 'train'
+DATASET_NAME = 'train_cleaned'
 
 # s3://<server url>:<port>/<bucket>/...
 OUTPUT_URI = 's3://experiment-logging/storage'

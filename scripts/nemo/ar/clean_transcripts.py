@@ -5,10 +5,10 @@ from typing import Dict, Any, Union, List
 
 #### PARAMS ####
 
-PARENT_DATASET_ID = '01288ee80cf642d685496b89b07f819a'
+PARENT_DATASET_ID = '709a1943cd0c4db18ec32cb17d978541'
 ARTIFACT_PATH = 'train_manifest.json'
 
-DATASET_PROJECT = 'datasets/mediaspeech/ar/wav_16k'
+DATASET_PROJECT = 'datasets/commonvoice/v10.0/arabic/wav_16k'
 DATASET_NAME = 'train_cleaned'
 
 # s3://<server url>:<port>/<bucket>/...
@@ -28,7 +28,7 @@ def remove_punctuations_in_text(text: str) -> str:
     # remove punctuations
     text = ''.join(e for e in text if (e.isalnum() or e == ' '))
     # remove double spaces
-    text = ''.join(text.split())
+    text = ' '.join(text.split())
     return text
 
 def remove_punctuations_in_item(item: Dict[str, Any]) -> Dict[str, Any]:

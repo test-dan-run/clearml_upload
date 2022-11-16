@@ -4,13 +4,14 @@ from typing import List
 
 #### PARAMS ####
 
-DATASET_PROJECT = 'datasets/tunisian_msa/ar/wav_16k'
-DATASET_NAME = 'train'
-LOCAL_DATASET_DIR = '/mnt/d/datasets/Tunisian_MSA/processed/wav_16k/train'
-ARTIFACT_PATHS = ['/mnt/d/datasets/Tunisian_MSA/processed/wav_16k/train/train_manifest.json',]
+DATASET_PROJECT = 'audio/speech_recognition'
+DATASET_NAME = 'cv-corpus-10.0-yue'
+LOCAL_DATASET_DIR = '/mnt/d/datasets/commonvoice/cv-corpus-10.0/train'
+ARTIFACT_PATHS = ['/mnt/d/datasets/commonvoice/cv-corpus-10.0/train/train_manifest.json',]
 
-# s3://<server url>:<port>/<bucket>/...
-OUTPUT_URI = 's3://experiment-logging/storage'
+# # s3://<server url>:<port>/<bucket>/...
+# OUTPUT_URI = 's3://experiment-logging/storage'
+OUTPUT_URI = None
 
 ################
 

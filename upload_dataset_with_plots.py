@@ -7,9 +7,9 @@ from clearml import Task, Dataset, Logger
 #### PARAMS ####
 
 DATASET_PROJECT = 'audio/speech_recognition'
-DATASET_NAME = 'cv-corpus-11.0-delta-yue-dev'
-LOCAL_DATASET_DIR = '/mnt/d/datasets/commonvoice/cv-corpus-11.0-delta/dev'
-ARTIFACT_PATHS = ['/mnt/d/datasets/commonvoice/cv-corpus-11.0-delta/dev/dev_manifest.json',]
+DATASET_NAME = 'cv-corpus-10.0-zh-TW-test'
+LOCAL_DATASET_DIR = '/mnt/d/datasets/cv-corpus-10.0-delta-2022-07-04/test'
+ARTIFACT_PATHS = ['/mnt/d/datasets/cv-corpus-10.0-delta-2022-07-04/test/test_manifest.json',]
 
 # # s3://<server url>:<port>/<bucket>/...
 # OUTPUT_URI = 's3://experiment-logging/storage'
@@ -82,8 +82,9 @@ def upload_dataset_with_plots(
         )
 
     # upload plots
-    logger = task.get_logger()
-    plot_fn(logger)
+    if plot_fn:
+        logger = task.get_logger()
+        plot_fn(logger)
 
     # finalize the dataset
     dataset.finalize()

@@ -1,18 +1,43 @@
 import os
-from clearml import Task, Dataset
-from typing import List
+from clearml import Task, Dataset, Logger
+from typing import List, Optional, Any
 import json
+import pandas as pd
+import plotly.express as px
 
 #### PARAMS ####
 
-PARENT_DATASET_IDS = ['127f476b17d24dfb99b3cb2f9797a2bf', '7835dfc23df9490d805ba5d069750c38','02e69bcacd984eaa8459938a9e1fb309']
-ARTIFACT_NAME = 'train_manifest.json'
+PARENT_DATASET_IDS = ['971b2303bcf74aee89889d7427e04592', '0fb20f414cca4ab1b9ee15db28d37a0e',]
+ARTIFACT_NAME = 'test_manifest.json'
 
-DATASET_PROJECT = 'datasets/combined_asr/ar/wav_16k'
-DATASET_NAME = 'train_cleaned'
+DATASET_PROJECT = 'audio/speech_recognition'
+DATASET_NAME = 'cv-corpus-11.0-yue-wav16k'
 
 # s3://<server url>:<port>/<bucket>/...
-OUTPUT_URI = 's3://experiment-logging/storage'
+OUTPUT_URI = None
+
+def commonvoice_stats(manifest_path: str, logger: Logger) -> None:
+    df = pd.read_json(manifest_path, lines=True)
+    df['num_chars'] = df['text'].apply(lambda x: len(x))
+    df['num_words'] = df['text'].apply(lambda x: len(x.split(' ')))
+    df = df.fillna(value='none')
+
+    fig = px.histogram(df, x='age')
+    logger.report_plotly(title='Entries by Age', series='Entries', figure=fig)
+
+    fig = px.histogram(df, x='accent')
+    logger.report_plotly(title='Entries by Accent', series='Entries', figure=fig)
+
+    fig = px.histogram(df, x='gender')
+    logger.report_plotly(title='Entries by Gender', series='Entries', figure=fig)
+
+    fig = px.histogram(df, x='num_chars')
+    logger.report_plotly(title='Entries by Number of Characters', series='Entries', figure=fig)
+
+    fig = px.histogram(df, x='num_words')
+    logger.report_plotly(title='Entries by Number of Words', series='Entries', figure=fig)
+
+PLOT_FN = lambda logger: commonvoice_stats(ARTIFACT_NAME, logger)
 
 ################
 
@@ -21,20 +46,13 @@ def combine_datasets(
     dataset_name: str,
     artifact_name: str,
     parent_ids: List[str] = None,
-    output_uri: str = None
+    output_uri: str = None,
+    plot_fn: Optional[Any] = None
     ) -> None:
     '''
     artifact_paths: local files into easily accessible clearml files that can be used via the web UI or programatically
     parent_ids: ids of parent datasets if wish to extend from existing parent datasets
     '''
-
-    # initialize empty task
-    task = Task.init(
-        project_name = dataset_project, 
-        task_name = dataset_name, 
-        output_uri=output_uri,
-        task_type='data_processing'
-        )
 
     manifest_items = []
     for parent_id in parent_ids:
@@ -54,7 +72,7 @@ def combine_datasets(
         dataset_project = dataset_project,
         dataset_name = dataset_name,
         parent_datasets = parent_ids,
-        use_current_task = True
+        use_current_task = False
     )
 
     # add all files in the local directory
@@ -65,11 +83,17 @@ def combine_datasets(
         verbose=True
     )
 
+    task = Task.get_task(dataset.id)
     task.upload_artifact(
         name = artifact_name, 
         artifact_object = artifact_name
     )
     
+        # upload plots
+    if plot_fn: 
+        logger = task.get_logger()
+        plot_fn(logger)
+
     # finalize the dataset
     dataset.finalize()
 
@@ -83,5 +107,6 @@ if __name__ == '__main__':
         dataset_name = DATASET_NAME,
         artifact_name = ARTIFACT_NAME,
         parent_ids = PARENT_DATASET_IDS,
-        output_uri = OUTPUT_URI
+        output_uri = OUTPUT_URI,
+        plot_fn = PLOT_FN
     )
